@@ -71,6 +71,7 @@ router.put('/:id', (req, res, next) => {
   let session = {
     score: score,
     handsPlayed: handsPlayed,
+    note: note,
     date: Date.now()
   };
   User

@@ -7,12 +7,12 @@ const mongoose = require('mongoose');
 const schema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  note: { type: String },
   sessions: [
     {
       date: Date,
       handsPlayed: Number,
-      score: Number
+      score: Number,
+      note: String
     }
   ],
 });
