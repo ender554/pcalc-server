@@ -6,7 +6,14 @@ const mongoose = require('mongoose');
 // ===== Define UserSchema & UserModel =====
 const schema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
-  password: { type: String, required: true }
+  password: { type: String, required: true },
+  note: { type: String },
+  sessions: [
+    {
+      date: Date,
+      score: Number
+    }
+  ],
 });
 
 // Transform output during `res.json(data)`, `console.log(data)` etc.
@@ -28,5 +35,6 @@ schema.methods.validatePassword = function (pwd) {
 schema.statics.hashPassword = function (pwd) {
   return bcrypt.hash(pwd, 10);
 };
+
 
 module.exports = mongoose.model('User', schema);

@@ -25,7 +25,7 @@ router.post('/', (req, res, next) => {
 
   // Username and password were validated as pre-trimmed
   let { username, password } = req.body;
-  console.log(req.body);
+  // console.log(req.body);
   return User.hashPassword(password)
     .then(digest => {
       const newUser = {
@@ -45,6 +45,30 @@ router.post('/', (req, res, next) => {
       }
       next(err);
     });
+});
+
+
+
+/*=============== PUT/UPDATE USER ============*/
+router.put('/:id', (req, res, next) => {
+  let{ note, score } = req.body;
+  let userId = req.params.id;
+  let session = {
+    score: score,
+    date: Date.now()
+  };
+  // let notes = "this is a note";
+  // let newData = {notes, session};
+  User
+    .findByIdAndUpdate(userId, {$push: {sessions: session}, note})
+    .exec()
+    .then(userSession => {
+      res.json({
+        sessions: userSession
+      });
+    })
+    .catch(err => ((err)));
+    
 });
 
 module.exports = router;
