@@ -5,11 +5,11 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const passport = require('passport');
+const bodyParser = require('body-parser');
 const { PORT, CLIENT_ORIGIN } = require('./config');
 const { dbConnect } = require('./db-mongoose');
 const localStrategy = require('./passport/local');
 const jwtStrategy = require('./passport/jwt');
-// const {dbConnect} = require('./db-knex');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 passport.use(localStrategy);
@@ -28,8 +28,8 @@ app.use(
     origin: CLIENT_ORIGIN
   })
 );
-
-app.use(express.json());
+app.use(bodyParser.json());
+// app.use(express.json());
 
 // const jwtAuth = passport.authenticate('jwt', { session: false, failWithError: true });
 

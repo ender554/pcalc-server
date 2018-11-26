@@ -1,11 +1,13 @@
 'use strict';
 
 const express = require('express');
+const bodyParser = require('body-parser');
+
 
 const User = require('../models/user');
 
 const router = express.Router();
-
+router.use(bodyParser.json());
 /* ========== GET/READ ALL ITEMS ========== */
 router.get('/', (req, res, next) => {
 
@@ -13,6 +15,18 @@ router.get('/', (req, res, next) => {
     .sort('name')
     .then(results => {
       res.json(results);
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
+/*============ GET SINGLE USER ==============*/
+router.get('/:id', (req, res, next) => {
+  let userId = req.params.id;
+  User.findById(userId)
+    .then(result => {
+      res.json(result);
     })
     .catch(err => {
       next(err);
@@ -51,14 +65,14 @@ router.post('/', (req, res, next) => {
 
 /*=============== PUT/UPDATE USER ============*/
 router.put('/:id', (req, res, next) => {
-  let{ note, score } = req.body;
+  let{ note, score, handsPlayed } = req.body;
+  console.log(req.body);
   let userId = req.params.id;
   let session = {
     score: score,
+    handsPlayed: handsPlayed,
     date: Date.now()
   };
-  // let notes = "this is a note";
-  // let newData = {notes, session};
   User
     .findByIdAndUpdate(userId, {$push: {sessions: session}, note})
     .exec()
@@ -67,7 +81,7 @@ router.put('/:id', (req, res, next) => {
         sessions: userSession
       });
     })
-    .catch(err => ((err)));
+    .catch(err => (next(err)));
     
 });
 

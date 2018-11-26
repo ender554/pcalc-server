@@ -11,6 +11,7 @@ const schema = new mongoose.Schema({
   sessions: [
     {
       date: Date,
+      handsPlayed: Number,
       score: Number
     }
   ],
